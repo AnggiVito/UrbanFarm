@@ -17,6 +17,17 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
+        .navbar {
+            background-color: #4caf50;
+        }
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+        }
+        .nav-link:hover {
+            background-color: #388e3c;
+            color: white !important;
+        }
         .card-header {
             background: #28a745;
             color: white;
@@ -58,6 +69,31 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard">UrbanFarm</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('product.index') }}">E-Commerce</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('growplan.index') }}">Growplan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('chat.index') }}">Chat Komunitas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container py-4">
         <div class="card shadow border-0">
             <div class="card-header text-center">

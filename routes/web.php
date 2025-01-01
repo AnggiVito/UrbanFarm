@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,12 +29,19 @@ Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index
 Route::resource('artikel', ArtikelController::class);
 
 Route::get('/community', [ChatController::class, 'index'])->name('chat.index');
+Route::resource('chat', ChatController::class);
 
 Route::get('/growplan', [GrowplanController::class, 'index'])->name('growplan.index');
 Route::resource('growplan', GrowplanController::class);
 
 Route::get('/video', [VideoController::class, 'index'])->name('video.index');
 Route::resource('video', VideoController::class);
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');

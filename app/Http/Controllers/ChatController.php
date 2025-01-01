@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\chat;
+use App\Models\Chat;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the chats.
      */
     public function index()
     {
@@ -18,50 +17,66 @@ class ChatController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new chat.
      */
     public function create()
     {
-        //
+        return view('chat.tambah');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created chat in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        Chat::create($validatedData);
+
+        return redirect()->route('chat.index')->with('success', 'Chat berhasil ditambahkan!');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified chat.
      */
-    public function show(string $id)
+    public function show(Chat $chat)
     {
-        //
+        return view('chats.show', compact('chat'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified chat.
      */
-    public function edit(string $id)
+    public function edit(Chat $chat)
     {
-        //
+        return view('chat.edit', compact('chat'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified chat in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Chat $chat)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $chat->update($validatedData);
+
+        return redirect()->route('chat.index')->with('success', 'Chat berhasil diperbarui!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified chat from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Chat $chat)
     {
-        //
+        $chat->delete();
+
+        return redirect()->route('chat.index')->with('success', 'Chat berhasil dihapus!');
     }
 }

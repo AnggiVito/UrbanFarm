@@ -80,11 +80,7 @@ class VideoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $video = Video::find($id);
-
-        if (!$video) {
-            return response()->json(['message' => 'Video not found'], 404);
-        }
+        $video = Video::findOrFail($id); // Gunakan findOrFail untuk menghindari pengulangan kode error handling
 
         $request->validate([
             'tittle' => 'string|max:255',
@@ -93,22 +89,23 @@ class VideoController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            // Delete the old photo
+            // Hapus foto lama jika ada
             if ($video->photo) {
                 Storage::disk('public')->delete($video->photo);
             }
 
-            // Store the new photo
+            // Simpan foto baru
             $photoPath = $request->file('photo')->store('uploads/videos', 'public');
             $video->photo = $photoPath;
         }
 
+        // Update data video
         $video->update($request->only(['tittle', 'description']));
 
-        return response()->json([
-            'message' => 'Video updated successfully!',
-            'data' => $video,
-        ]);
+        // Redirect ke halaman index dengan flash message
+        return redirect()
+            ->route('video.index')
+            ->with('success', 'Video updated successfully!');
     }
 
     /**
