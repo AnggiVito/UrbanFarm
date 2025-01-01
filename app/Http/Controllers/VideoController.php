@@ -72,7 +72,7 @@ class VideoController extends Controller
     public function edit(string $id)
     {
         $video = video::findOrFail($id);
-        return view('videos.edit', compact('video'));
+        return view('video.edit', compact('video'));
     }
 
     /**

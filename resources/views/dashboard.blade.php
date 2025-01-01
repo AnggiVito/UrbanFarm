@@ -53,13 +53,20 @@
         h3.section-title {
             color: #2e7d32;
         }
+        table th {
+            background-color: #4caf50;
+            color: white;
+        }
+        .card {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#">UrbanFarm</a>
+            <a class="navbar-brand" href="dashboard">UrbanFarm</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -69,7 +76,7 @@
                         <a class="nav-link" href="{{ route('product.index') }}">E-Commerce</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                        <a class="nav-link" href="{{ route('growplan.index') }}">Growplan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('chat.index') }}">Chat Komunitas</a>
@@ -83,13 +90,13 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container content-section mt-4">
+    <div class="container content-section">
         <!-- Artikel dan Video Section -->
         <div class="row mb-5">
             <!-- Artikel Section -->
             <div class="col-md-6">
-                <div class="text-center">
-                    <i class="fa-solid fa-newspaper icon" style="font-size: 50px; color: green;"></i>
+                <div class="card p-4 text-center">
+                    <i class="fa-solid fa-newspaper icon"></i>
                     <h5 class="card-title mt-3">Artikel Urban Farming</h5>
                     <p>Baca artikel menarik untuk menambah wawasan Anda.</p>
                     <a href="{{ route('artikel.index') }}" class="btn btn-success">Lihat Artikel</a>
@@ -98,8 +105,8 @@
 
             <!-- Video Section -->
             <div class="col-md-6">
-                <div class="text-center">
-                    <i class="fa-solid fa-video icon" style="font-size: 50px; color: green;"></i>
+                <div class="card p-4 text-center">
+                    <i class="fa-solid fa-video icon"></i>
                     <h5 class="card-title mt-3">Video Tutorial</h5>
                     <p>Tonton video untuk memahami teknik urban farming.</p>
                     <a href="{{ route('video.index') }}" class="btn btn-success">Lihat Video</a>
@@ -112,22 +119,33 @@
             <div class="col-12">
                 <h3 class="section-title">Aktivitas (History Growplan)</h3>
             </div>
-            <div class="col-md-12">
+            <div class="col-12">
                 <table class="table table-striped">
-                    <thead style="background-color: #4caf50; color: white;">
+                    <thead>
                         <tr>
+                            <th>No</th>
                             <th>Nama Plan</th>
-                            <th>Deskripsi</th>
-                            <th>Tanggal</th>
+                            <th>Benih</th>
+                            <th>Tanggal Dibuat</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach ($growplans as $growplan)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                                <td>{{ $growplan->tittle }}</td>
+                                <td>{{ $growplan->seed }}</td>
+                                <td>{{ $growplan->tanggal }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <!-- Floating Button for Adding Growplan -->
-    <div class="floating-btn">
+    <div class="floating-btn" onclick="location.href='{{ route('growplan.create') }}'">
         <i class="fa-solid fa-plus"></i>
     </div>
 

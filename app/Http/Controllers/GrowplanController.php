@@ -22,7 +22,7 @@ class GrowplanController extends Controller
      */
     public function create()
     {
-        //
+        return view('growplan.tambah');
     }
 
     /**
@@ -30,7 +30,25 @@ class GrowplanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tittle' => 'required|string|max:255',
+            'seed' => 'required|string|max:255',
+            'land' => 'required|string|max:255',
+            'soil' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+        ]);
+
+        // Menyimpan data Growplan baru
+        Growplan::create([
+            'tittle' => $request->tittle,
+            'seed' => $request->seed,
+            'land' => $request->land,
+            'soil' => $request->soil,
+            'tanggal' => $request->tanggal,
+        ]);
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('growplan.index')->with('success', 'Growplan berhasil ditambahkan!');
     }
 
     /**
@@ -38,7 +56,9 @@ class GrowplanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $growplan = Growplan::findOrFail($id);
+        
+        return view('growplan.show', compact('growplan'));
     }
 
     /**
@@ -46,7 +66,9 @@ class GrowplanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $growplan = Growplan::findOrFail($id);
+        
+        return view('growplan.edit', compact('growplan'));
     }
 
     /**
@@ -54,7 +76,28 @@ class GrowplanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tittle' => 'required|string|max:255',
+            'seed' => 'required|string|max:255',
+            'land' => 'required|string|max:255',
+            'soil' => 'required|string|max:255',
+            'tanggal' => 'required|date',
+        ]);
+
+        // Mencari Growplan berdasarkan ID
+        $growplan = Growplan::findOrFail($id);
+
+        // Update data Growplan
+        $growplan->update([
+            'tittle' => $request->tittle,
+            'seed' => $request->seed,
+            'land' => $request->land,
+            'soil' => $request->soil,
+            'tanggal' => $request->tanggal,
+        ]);
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('growplan.index')->with('success', 'Growplan berhasil diperbarui!');
     }
 
     /**
@@ -62,6 +105,12 @@ class GrowplanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $growplan = Growplan::findOrFail($id);
+
+        // Menghapus growplan dari database
+        $growplan->delete();
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('growplan.index')->with('success', 'Growplan berhasil dihapus!');
     }
 }

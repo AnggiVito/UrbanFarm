@@ -7,74 +7,106 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #e8f5e9; /* Warna hijau lembut untuk latar belakang */
+            background-color: #002b1a; /* Hijau tua sesuai gambar */
+            color: #fff; /* Warna teks putih */
             font-family: 'Arial', sans-serif;
         }
-        .form-container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+
+        .container {
+            margin-top: 10%;
             max-width: 400px;
-            margin: 50px auto;
         }
-        h3 {
-            color: #2e7d32; /* Hijau elegan untuk judul */
+
+        .card {
+            background-color: #004529; /* Hijau medium */
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fdbf00; /* Warna kuning untuk judul */
+        }
+
+        p {
+            font-size: 14px;
+            color: #d3d3d3; /* Abu-abu terang untuk deskripsi */
+        }
+
+        label {
+            font-size: 14px;
+            color: #fff; /* Putih untuk label input */
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            background-color: #d3d3d3; /* Abu-abu terang */
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #004529; /* Hijau tua untuk teks input */
+        }
+
+        input::placeholder {
+            color: #8a8a8a; /* Placeholder abu-abu */
+        }
+
         .btn-primary {
-            background-color: #43a047;
-            border-color: #43a047;
+            background-color: #ffcc00;
+            border: none;
+            font-weight: bold;
+            border-radius: 20px;
         }
         .btn-primary:hover {
-            background-color: #2e7d32;
-            border-color: #2e7d32;
+            background-color: #ffa700;
         }
-        .form-label {
-            color: #1b5e20;
-        }
+
         a {
-            color: #2e7d32;
-            text-decoration: none;
+            color: #ffcc00;
+            font-weight: bold;
         }
         a:hover {
-            color: #1b5e20;
+            color: #ffa700;
             text-decoration: underline;
+        }
+
+        .sign-up {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .logo {
+            width: 150px; /* Sesuaikan ukuran logo */
+            margin: 0 auto 20px; /* Margin bawah dan tengah */
+            display: block;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="form-container">
-        <h3 class="text-center mb-4">Login to UrbanFarm</h3>
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <!-- Input Email -->
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+    <div class="container">
+        <div class="card text-center">
+            <h1>Login</h1>
+            <p>Discover the joy of urban gardening! Whether you're a seasoned gardener or just getting started, UrbanFarm is here to help you grow fresh produce, beautiful flowers, and sustainable greenery right in your city space.</p>
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="mb-3 text-start">
+                    <label for="email">Enter Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email" class="form-control" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="password">Enter Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+            </form>
+            <div class="sign-up">
+                <p>Don't have an account? <a href="{{ route('customers.create') }}">Sign Up</a></p>
             </div>
-
-            <!-- Input Password -->
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-
-            <!-- Remember Me -->
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                <label class="form-check-label" for="remember">Remember me</label>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-
-        <!-- Link to Register -->
-        <div class="text-center mt-3">
-            <p>Don't have an account? <a href="{{ route('customers.create') }}">Register here</a></p>
         </div>
     </div>
-</div>
 </body>
 </html>

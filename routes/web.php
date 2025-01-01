@@ -22,14 +22,18 @@ Route::post('/login', [CustomerController::class, 'login']);
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::resource('product', ProductController::class);
 
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
+Route::resource('artikel', ArtikelController::class);
 
 Route::get('/community', [ChatController::class, 'index'])->name('chat.index');
 
 Route::get('/growplan', [GrowplanController::class, 'index'])->name('growplan.index');
+Route::resource('growplan', GrowplanController::class);
 
 Route::get('/video', [VideoController::class, 'index'])->name('video.index');
+Route::resource('video', VideoController::class);
 
 Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
