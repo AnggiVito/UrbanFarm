@@ -11,12 +11,13 @@ class artikel extends Model
 
     protected $table = 'artikels';
     protected $fillable = [
-        'tittle',
+        'customer_id',
+        'title',
         'photo',
         'text',
     ];
 
-    public function customers() {
+    public function customer() {
         return $this->belongsTo(customer::class, 'customer_id', 'id');
     }
 }

@@ -11,11 +11,12 @@ class chat extends Model
 
     protected $table = 'chats';
     protected $fillable = [
+        'customer_id',
         'name',
         'description',
     ];
 
-    public function chats() {
-        return $this->hasMany(chat::class, 'customer_id');
+    public function customer() {
+        return $this->hasMany(customer::class, 'customer_id', 'id');
     }
 }

@@ -3,120 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Growplan</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        .navbar {
-            background-color: #4caf50;
-        }
-        .navbar-brand,
-        .nav-link {
-            color: white !important;
-        }
-        .nav-link:hover {
-            background-color: #388e3c;
-            color: white !important;
-        }
-    </style>
+    <title>GrowPlan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard">UrbanFarm</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('product.index') }}">E-Commerce</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('growplan.index') }}">Growplan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('chat.index') }}">Chat Komunitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
-                    </li>
-                </ul>
+<body class="bg-white">
+    <div class="container mx-auto p-4">
+        <header class="flex justify-between items-center p-4 border-b">
+            <h1 class="text-4xl font-bold text-green-600">
+                <a href="/dashboard" class="hover:underline">UrbanFarm</a>
+            </h1>
+            <nav class="flex space-x-4">
+                <a href="{{ route('product.index') }}" class="text-green-600 hover:underline">E-Commerce</a>
+                <a href="{{ route('growplan.index') }}" class="text-green-600 hover:underline">Growplan</a>
+                <a href="{{ route('chat.index') }}" class="text-green-600 hover:underline">Chat Komunitas</a>
+                <a href="{{ route('review.index') }}" class="text-green-600 hover:underline">Review Produk</a>
+            </nav>
+        </header>
+        <main>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-green-700">Kelola Growplan Anda di sini:</h2>
+                <a href="{{ route('growplan.create') }}" class="bg-green-700 text-white p-2 rounded-full">
+                    <i class="fas fa-plus-circle"></i> Tambah Growplan
+                </a>
             </div>
-        </div>
-    </nav>
-    <div class="container mt-5">
-        <div class="card shadow border-0">
-            <div class="card-header bg-success text-white text-center">
-                <h1 class="my-2">Daftar Growplan</h1>
-            </div>
-            <div class="card-body">
-                <!-- Tampilkan pesan sukses -->
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
 
-                <!-- Tombol Tambah Growplan -->
-                <div class="d-flex justify-content-between mb-3">
-                    <h5 class="text-success">Kelola Growplan Anda di sini:</h5>
-                    <a href="{{ route('growplan.create') }}" class="btn btn-success">
-                        <i class="fas fa-plus-circle"></i> Tambah Growplan
-                    </a>
+            <!-- Tampilkan pesan sukses -->
+            @if(session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                    {{ session('success') }}
                 </div>
+            @endif
 
-                <!-- Tabel Growplan -->
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
-                        <thead class="table-success text-white">
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Growplan</th>
-                                <th>Benih</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Aksi</th>
+            <!-- Tabel Growplan -->
+            <div class="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-md">
+                <table class="min-w-full bg-white rounded-lg shadow-md">
+                    <thead>
+                        <tr class="bg-green-200 text-left">
+                            <th class="py-2 px-4">No</th>
+                            <th class="py-2 px-4">Nama Growplan</th>
+                            <th class="py-2 px-4">Banyak Benih</th>
+                            <th class="py-2 px-4">Tanggal Mulai</th>
+                            <th class="py-2 px-4">Customer</th>
+                            <th class="py-2 px-4">Status</th>
+                            <th class="py-2 px-4">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($growplans as $plan)
+                            <tr class="border-t {{ $plan->status == 'active' ? 'bg-green-50' : 'bg-red-50' }}">
+                                <td class="py-2 px-4">{{ $loop->iteration }}</td>
+                                <td class="py-2 px-4">{{ $plan->title }}</td>
+                                <td class="py-2 px-4">{{ $plan->seed }}</td>
+                                <td class="py-2 px-4">{{ $plan->tanggal }}</td>
+                                <td class="py-2 px-4">{{ $plan->customer->name }}</td>
+                                <td class="py-2 px-4">
+                                    <span class="inline-block px-3 py-1 rounded-full {{ $plan->status == 'active' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
+                                        {{ ucfirst($plan->status) }}
+                                    </span>
+                                </td>
+                                <td class="py-2 px-4">
+                                    <!-- Tombol Aksi -->
+                                    <button onclick="openModal({{ $plan->id }})" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                                        <i class="fas fa-cogs"></i> Aksi
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($growplan as $growplan)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $growplan->tittle }}</td>
-                                    <td>{{ $growplan->seed }}</td>
-                                    <td>{{ $growplan->tanggal }}</td>
-                                    <td>
-                                        <!-- Tombol Edit -->
-                                        <a href="{{ route('growplan.edit', $growplan->id) }}" class="btn btn-warning btn-sm">
-                                            <i class="fas fa-pencil-alt"></i> Edit
-                                        </a>
-
-                                        <!-- Form Hapus -->
-                                        <form action="{{ route('growplan.destroy', $growplan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus Growplan ini?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash-alt"></i> Hapus
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">Belum ada Growplan yang ditambahkan.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+        </main>
+    </div>
+
+    <!-- Modal Aksi -->
+    <div id="actionModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h3 class="text-xl font-semibold mb-4">Pilih Aksi</h3>
+            <div class="space-y-4">
+                <a href="#" id="editLink" class="block text-blue-600 hover:underline">Edit Growplan</a>
+                <a href="#" id="deleteLink" class="block text-red-600 hover:underline">Hapus Growplan</a>
+                <a href="#" id="detailLink" class="block text-green-600 hover:underline">Lihat Detail</a>
+            </div>
+            <button onclick="closeModal()" class="mt-4 bg-gray-300 text-gray-700 px-4 py-2 rounded-md">Tutup</button>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fungsi untuk membuka modal
+        function openModal(planId) {
+            // Update URL untuk aksi modal
+            document.getElementById('editLink').href = '/growplan/' + planId + '/edit';
+            document.getElementById('deleteLink').href = '/growplan/' + planId;
+            document.getElementById('detailLink').href = '/growplan/' + planId;
+
+            // Tampilkan modal
+            document.getElementById('actionModal').classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('actionModal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>

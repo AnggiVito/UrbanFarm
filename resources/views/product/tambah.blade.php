@@ -26,6 +26,16 @@
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" class="border p-4 shadow-sm rounded">
             @csrf
             <div class="mb-3">
+                <label for="customer_id" class="form-label">Customer</label>
+                <select name="customer_id" id="customer_id" class="form-select" required>
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
+                            {{ $customer->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
                 <label for="nama" class="form-label">Nama Produk</label>
                 <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan nama produk" value="{{ old('nama') }}" required>
             </div>

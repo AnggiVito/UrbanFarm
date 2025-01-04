@@ -11,14 +11,15 @@ class growplan extends Model
 
     protected $table = 'growplans';
     protected $fillable = [
-        'tittle',
+        'customer_id',
+        'title',
         'seed',
         'land',
         'soil',
         'tanggal',
     ];
 
-    public function growplans() {
-        return $this->belongsTo(growplan::class, 'customer_id', 'id');
+    public function customer() {
+        return $this->belongsTo(customer::class, 'customer_id', 'id');
     }
 }

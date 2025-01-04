@@ -44,8 +44,8 @@
 
                 <!-- Judul Video -->
                 <div class="mb-3">
-                    <label for="tittle" class="form-label">Judul Video</label>
-                    <input type="text" class="form-control" id="tittle" name="tittle" value="{{ old('tittle', $video->tittle) }}" >
+                    <label for="title" class="form-label">Judul Video</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $video->title) }}" >
                 </div>
 
                 <!-- Foto Thumbnail -->

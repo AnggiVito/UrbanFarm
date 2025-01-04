@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Artikel - UrbanFarm</title>
+    <title>Edit Artikel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
@@ -47,8 +47,8 @@
 
                 <!-- Title Input -->
                 <div class="mb-3">
-                    <label for="tittle" class="form-label">Judul Artikel</label>
-                    <input type="text" name="tittle" id="tittle" class="form-control" value="{{ $artikel->tittle }}" required>
+                    <label for="title" class="form-label">Judul Artikel</label>
+                    <input type="text" name="title" id="title" class="form-control" value="{{ $artikel->title }}" required>
                 </div>
 
                 <!-- Text Input -->

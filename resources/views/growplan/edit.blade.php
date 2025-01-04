@@ -4,99 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Growplan</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        .navbar {
-            background-color: #4caf50;
-        }
-        .navbar-brand,
-        .nav-link {
-            color: white !important;
-        }
-        .nav-link:hover {
-            background-color: #388e3c;
-            color: white !important;
-        }
-    </style>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard">UrbanFarm</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('product.index') }}">E-Commerce</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('growplan.index') }}">Growplan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('chat.index') }}">Chat Komunitas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container mt-5">
-        <div class="card shadow border-0">
-            <div class="card-header bg-success text-white text-center">
-                <h1 class="my-2">Edit Growplan</h1>
-            </div>
-            <div class="card-body">
-                <!-- Form Edit Growplan -->
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-5xl">
+        <h1 class="text-4xl font-bold text-green-600 mb-8 text-center">Edit Growplan</h1>
+        <div class="flex flex-col lg:flex-row justify-between">
+            <!-- Form Section -->
+            <div class="w-full lg:w-1/2 pr-4">
+                <!-- Error Messages -->
+                @if($errors->any())
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <!-- Form for Editing Growplan -->
                 <form action="{{ route('growplan.update', $growplan->id) }}" method="POST">
                     @csrf
-                    @method('PUT')
-
-                    <div class="mb-3">
-                        <label for="tittle" class="form-label">Nama Growplan</label>
-                        <input type="text" class="form-control" id="tittle" name="tittle" value="{{ old('tittle', $growplan->tittle) }}" required>
+                    @method('PATCH')
+                    <div class="mb-4">
+                        <label for="customer_id" class="block text-green-600 font-semibold mb-2">Pilih Customer</label>
+                        <select id="customer_id" name="customer_id" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3">
+                            @foreach($customers as $customer)
+                                <option value="{{ $customer->id }}" {{ $growplan->customer_id == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="seed" class="form-label">Benih</label>
-                        <input type="text" class="form-control" id="seed" name="seed" value="{{ old('seed', $growplan->seed) }}" required>
+                    <div class="mb-4">
+                        <label for="title" class="block text-green-600 font-semibold mb-2">Nama Growplan</label>
+                        <input type="text" id="title" name="title" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3" value="{{ $growplan->title }}" required>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="land" class="form-label">Tanah</label>
-                        <input type="text" class="form-control" id="land" name="land" value="{{ old('land', $growplan->land) }}" required>
+                    <div class="mb-4">
+                        <label for="seed" class="block text-green-600 font-semibold mb-2">Banyaknya Benih</label>
+                        <input type="text" id="seed" name="seed" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3" value="{{ $growplan->seed }}" required>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="soil" class="form-label">Jenis Tanah</label>
-                        <input type="text" class="form-control" id="soil" name="soil" value="{{ old('soil', $growplan->soil) }}" required>
+                    <div class="mb-4">
+                        <label for="land" class="block text-green-600 font-semibold mb-2">Luas Lahan (m2)</label>
+                        <input type="text" id="land" name="land" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3" value="{{ $growplan->land }}" required>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="tanggal" class="form-label">Tanggal Mulai</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" value="{{ old('tanggal', $growplan->tanggal) }}" required>
+                    <div class="mb-4">
+                        <label for="soil" class="block text-green-600 font-semibold mb-2">Jenis Tanah</label>
+                        <input type="text" id="soil" name="soil" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3" value="{{ $growplan->soil }}" required>
                     </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Simpan Perubahan
-                        </button>
-                        <a href="{{ route('growplan.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> Kembali
-                        </a>
+                    <div class="mb-4">
+                        <label for="tanggal" class="block text-green-600 font-semibold mb-2">Tanggal Mulai</label>
+                        <input type="date" id="tanggal" name="tanggal" class="block w-full bg-gray-100 border border-gray-300 rounded py-2 px-3" value="{{ $growplan->tanggal }}" required>
                     </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-green-700">Simpan Perubahan</button>
                 </form>
+            </div>
+
+            <!-- Calendar Section -->
+            <div class="w-full lg:w-1/2 mt-8 lg:mt-0 flex justify-center">
+                <img src="{{ asset('image/urbanfarm-logo.png') }}" alt="Foto Produk" style="width: 1000px; height: 580px">
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

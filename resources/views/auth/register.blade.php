@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - UrbanFarm</title>
+    <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -81,8 +81,8 @@
 
                 <!-- Username -->
                 <div class="mb-3">
-                    <label for="username" class="form-label">Enter Username</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                    <label for="name" class="form-label">Enter Username</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="name" required>
                 </div>
 
                 <!-- Email -->

@@ -11,12 +11,13 @@ class video extends Model
 
     protected $table = 'videos';
     protected $fillable = [
-        'tittle',
+        'customer_id',
+        'title',
         'photo',
         'description',
     ];
 
-    public function videos() {
-        return $this->belongsTo(video::class, 'customer_id', 'id');
+    public function customer() {
+        return $this->belongsTo(customer::class, 'customer_id', 'id');
     }
 }

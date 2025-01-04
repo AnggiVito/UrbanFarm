@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\product;
+use App\Models\customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,7 +24,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.tambah');
+        $customers = customer::all();
+        return view('product.tambah', compact('customers'));
     }
 
     /**
@@ -32,6 +34,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'customer_id' => 'required|exists:customers,id',
             'nama' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category' => 'required|string|max:255',
@@ -46,6 +49,7 @@ class ProductController extends Controller
         }
 
         Product::create([
+            'customer_id' => $request->customer_id,
             'nama' => $request->nama,
             'photo' => $photoPath,
             'category' => $request->category,

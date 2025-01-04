@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\growplan;
+use App\Models\customer;
 use Illuminate\Http\Request;
 
 class GrowplanController extends Controller
@@ -13,8 +14,8 @@ class GrowplanController extends Controller
      */
     public function index()
     {
-        $growplan = Growplan::all();
-        return view('growplan.index')->with('growplan', $growplan);
+        $growplans = Growplan::all();
+        return view('growplan.index', compact('growplans'));
     }
 
     /**
@@ -22,7 +23,8 @@ class GrowplanController extends Controller
      */
     public function create()
     {
-        return view('growplan.tambah');
+        $customers = Customer::all();
+        return view('growplan.tambah', compact('customers'));
     }
 
     /**
@@ -31,23 +33,24 @@ class GrowplanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tittle' => 'required|string|max:255',
+            'customer_id' => 'required|exists:customers,id',
+            'title' => 'required|string|max:255',
             'seed' => 'required|string|max:255',
             'land' => 'required|string|max:255',
             'soil' => 'required|string|max:255',
             'tanggal' => 'required|date',
         ]);
 
-        // Menyimpan data Growplan baru
-        Growplan::create([
-            'tittle' => $request->tittle,
+        // Menyimpan data GrowPlan
+        GrowPlan::create([
+            'customer_id' => $request->customer_id,
+            'title' => $request->title,
             'seed' => $request->seed,
             'land' => $request->land,
             'soil' => $request->soil,
             'tanggal' => $request->tanggal,
         ]);
 
-        // Redirect ke halaman index dengan pesan sukses
         return redirect()->route('growplan.index')->with('success', 'Growplan berhasil ditambahkan!');
     }
 
@@ -66,9 +69,9 @@ class GrowplanController extends Controller
      */
     public function edit(string $id)
     {
+        $customers = Customer::all();
         $growplan = Growplan::findOrFail($id);
-        
-        return view('growplan.edit', compact('growplan'));
+        return view('growplan.edit', compact('growplan', 'customers'));
     }
 
     /**
@@ -77,7 +80,7 @@ class GrowplanController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'tittle' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'seed' => 'required|string|max:255',
             'land' => 'required|string|max:255',
             'soil' => 'required|string|max:255',
@@ -89,7 +92,7 @@ class GrowplanController extends Controller
 
         // Update data Growplan
         $growplan->update([
-            'tittle' => $request->tittle,
+            'title' => $request->title,
             'seed' => $request->seed,
             'land' => $request->land,
             'soil' => $request->soil,

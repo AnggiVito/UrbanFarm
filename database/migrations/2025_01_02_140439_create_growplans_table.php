@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('growplans', function (Blueprint $table) {
             $table->id();
-            $table->string('tittle');
+            $table->unsignedBigInteger('customer_id');
+            $table->string('title');
             $table->string('seed');
             $table->string('land');
             $table->string('soil');
             $table->date('tanggal');
             $table->timestamps();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

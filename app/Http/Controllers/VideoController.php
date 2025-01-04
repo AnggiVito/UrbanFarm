@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\video;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,7 +24,8 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('video.tambah');
+        $customers = Customer::all();
+        return view('video.tambah', compact('customers'));
     }
 
     /**
@@ -32,7 +34,8 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tittle' => 'required|string|max:255',
+            'customer_id' => 'required|exists:customers,id',
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -41,15 +44,13 @@ class VideoController extends Controller
         $photoPath = $request->file('photo')->store('uploads/videos', 'public');
 
         $video = Video::create([
-            'tittle' => $request->tittle,
+            'customer_id' => $request->customer_id,
+            'title' => $request->title,
             'description' => $request->description,
             'photo' => $photoPath,
         ]);
 
-        return response()->json([
-            'message' => 'Video created successfully!',
-            'data' => $video,
-        ], 201);
+        return redirect()->route('video.index')->with('success', 'Video berhasil ditambahkan!');
     }
 
     /**
@@ -83,7 +84,7 @@ class VideoController extends Controller
         $video = Video::findOrFail($id); // Gunakan findOrFail untuk menghindari pengulangan kode error handling
 
         $request->validate([
-            'tittle' => 'string|max:255',
+            'title' => 'string|max:255',
             'description' => 'string',
             'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -100,12 +101,10 @@ class VideoController extends Controller
         }
 
         // Update data video
-        $video->update($request->only(['tittle', 'description']));
+        $video->update($request->only(['title', 'description']));
 
         // Redirect ke halaman index dengan flash message
-        return redirect()
-            ->route('video.index')
-            ->with('success', 'Video updated successfully!');
+        return redirect()->route('video.index')->with('success', 'Video updated successfully!');
     }
 
     /**
@@ -126,6 +125,6 @@ class VideoController extends Controller
 
         $video->delete();
 
-        return response()->json(['message' => 'Video deleted successfully!']);
+        return redirect()->route('video.index')->with('success', 'Video berhasil ditambahkan!');
     }
 }

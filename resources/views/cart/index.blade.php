@@ -9,6 +9,7 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Keranjang Belanja</h1>
+        <a href="{{ route('product.index') }}" class="btn btn-secondary">Kembali</a>
 
         @if(session('success'))
             <div class="alert alert-success">

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Customer;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 
@@ -21,7 +21,8 @@ class ChatController extends Controller
      */
     public function create()
     {
-        return view('chat.tambah');
+        $customers = Customer::all();
+        return view('chat.tambah', compact('customers'));
     }
 
     /**
@@ -30,6 +31,7 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
         ]);

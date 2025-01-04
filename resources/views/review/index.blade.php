@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Daftar Review</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -42,6 +42,13 @@
         }
         .table tr:nth-child(even) {
             background-color: #e8f5e9;
+        }
+        .stars {
+            color: gold;
+            font-size: 1.5em;
+        }
+        .stars span {
+            margin-right: 5px;
         }
         .floating-btn {
             position: fixed;
@@ -93,60 +100,77 @@
 
     <!-- Main Content -->
     <div class="container content-section">
-        <!-- Artikel dan Video Section -->
-        <div class="row mb-5">
-            <div class="col-md-6">
-                <div class="card p-4 d-flex align-items-center">
-                    <i class="fa-solid fa-newspaper icon"></i>
-                    <h5 class="card-title mt-3">Artikel Urban Farming</h5>
-                    <a href="{{ route('artikel.index') }}" class="btn btn-success">Lihat Artikel</a>
-                </div>
+        <h1 class="text-center mb-4">Daftar Review Produk</h1>
+
+        <!-- Flash Message -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
-            <div class="col-md-6">
-                <div class="card p-4 d-flex align-items-center">
-                    <i class="fa-solid fa-video icon"></i>
-                    <h5 class="card-title mt-3">Video Tutorial</h5>
-                    <a href="{{ route('video.index') }}" class="btn btn-success">Lihat Video</a>
-                </div>
-            </div>
+        @endif
+
+        <!-- Tombol Tambah Review -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ route('review.create') }}" class="btn btn-success">Tambah Review</a>
         </div>
 
-        <!-- Aktivitas Section -->
-        <div class="row">
-            <div class="col-12">
-                <h3 class="section-title">Aktivitas (History Growplan)</h3>
-            </div>
-            <div class="col-12">
-                <table class="table table-bordered">
-                    <thead>
+        <!-- Tabel Review -->
+        <div class="card p-4">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nama Produk</th>
+                        <th>Rating</th>
+                        <th>Komentar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($reviews as $review)
                         <tr>
-                            <th>No</th>
-                            <th>Nama Plan</th>
-                            <th>Benih</th>
-                            <th>Tanggal Dibuat</th>
+                            <td>{{ $review->product->nama }}</td>
+                            <td><span class="stars" data-rating="{{ $review->rating }}"></span></td>
+                            <td>{{ $review->comment ?? 'Tidak ada komentar' }}</td>
+                            <td>
+                                <a href="{{ route('review.edit', $review->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('review.destroy', $review->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus review ini?')">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($growplans as $growplan)
+                    @empty
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $growplan->title }}</td>
-                            <td>{{ $growplan->seed }}</td>
-                            <td>{{ $growplan->tanggal }}</td>
+                            <td colspan="4" class="text-center">Tidak ada review yang tersedia.</td>
                         </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Floating Button for Adding Growplan -->
-    <div class="floating-btn" onclick="location.href='{{ route('growplan.create') }}'">
+    <!-- Floating Button for Adding Review -->
+    <div class="floating-btn" onclick="location.href='{{ route('review.create') }}'">
         <i class="fa-solid fa-plus"></i>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script>
+        document.querySelectorAll('.stars').forEach(star => {
+            const rating = parseInt(star.getAttribute('data-rating'));
+            let starHtml = '';
+            
+            // Membuat bintang penuh sesuai dengan rating
+            for (let i = 0; i < 5; i++) {
+                if (i < rating) {
+                    starHtml += '★'; // Bintang penuh
+                } else {
+                    starHtml += '☆'; // Bintang kosong
+                }
+            }
+            star.innerHTML = starHtml;
+        });
+    </script>
 </body>
 </html>
